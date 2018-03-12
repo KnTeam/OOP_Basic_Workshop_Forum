@@ -92,10 +92,20 @@
                 var args = line.Split(";", StringSplitOptions.RemoveEmptyEntries);
                 var id = int.Parse(args[0]);
                 var name = args[1];
-                var postIds = args[2]
+                int[] postIds;
+
+                if (args.Length > 2)
+                {
+                     postIds = args[2]
                     .Split(',', StringSplitOptions.RemoveEmptyEntries)
                     .Select(int.Parse)
                     .ToArray();
+                }
+                else
+                {
+                    postIds = new int[0];
+                }
+
                 var category = new Category(id, name, postIds);
                 categories.Add(category);
             }
@@ -138,10 +148,20 @@
                 var id = int.Parse(args[0]);
                 var username = args[1];
                 var password = args[2];
-                var postIds = args[3]
+                int[] postIds;
+
+                if (args.Length > 3)
+                {
+                    postIds = args[3]
                     .Split(',', StringSplitOptions.RemoveEmptyEntries)
                     .Select(int.Parse)
                     .ToArray();
+                }
+                else
+                {
+                    postIds = new int[0];
+                }
+
                 var user = new User(id, username, password, postIds);
                 users.Add(user);
             }
@@ -187,10 +207,20 @@
                 var content = args[2];
                 var categoryId = int.Parse(args[3]);
                 var authorId = int.Parse(args[4]);
-                var replyIds = args[5]
-                    .Split(',', StringSplitOptions.RemoveEmptyEntries)
-                    .Select(int.Parse)
-                    .ToArray();
+                int[] replyIds;
+
+                if (args.Length > 5)
+                {
+                    replyIds = args[5]
+                        .Split(',', StringSplitOptions.RemoveEmptyEntries)
+                        .Select(int.Parse)
+                        .ToArray();
+                }
+                else
+                {
+                    replyIds = new int[0];
+                }
+
                 var post = new Post(id, title, content, categoryId, authorId, replyIds);
                 posts.Add(post);
             }
