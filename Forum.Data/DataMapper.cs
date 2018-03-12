@@ -19,29 +19,62 @@
             config = LoadConfig(DATA_PATH + CONFIG_PATH);
         }
 
+        /// <summary>
+        /// Checks whether a file form the path exists and Create a new one with the string form DEFAULT_CONFIG constant if it doesn’t.
+        /// </summary>
         private static void EnsureConfigFile(string configFilePath)
         {
-            throw new NotImplementedException();
+            if (!File.Exists(configFilePath))
+            {
+                File.WriteAllText(configFilePath, DEFAULT_CONFIG);
+            }
         }
 
+        /// <summary>
+        /// Checks whether a file form the path exists and Create a new empty one.
+        /// </summary>
         private static void EnsureFile(string path)
         {
-            throw new NotImplementedException();
+            if (!File.Exists(path))
+            {
+                File.Create(path).Close();
+            }
         }
 
-        private static Dictionary<string, string> LoadConfig(string v)
+        /// <summary>
+        /// After Calling the EnsureConfigFile method, here the data is read, split by delimiter '=', convert to Dictionary and return the config(load).
+        /// </summary>
+        /// <returns>Dictionary<string.string></string></returns>
+        private static Dictionary<string, string> LoadConfig(string configPath)
         {
-            throw new NotImplementedException();
+            EnsureConfigFile(configPath);
+
+            var contents = ReadLines(configPath);
+
+            var config = contents
+                .Select(x => x.Split('='))
+                .ToDictionary(x => x[0], x => DATA_PATH + x[1]);
+
+            return config;
         }
 
+        /// <summary>
+        /// Reads the lines of the file from the path specified and returns string array.
+        /// </summary>
+        /// <returns>String[]</returns>
         private static string[] ReadLines(string path)
         {
-            throw new NotImplementedException();
+            EnsureFile(path);
+            var lines = File.ReadAllLines(path);
+            return lines;
         }
 
+        /// <summary>
+        /// Writes the string[] to file
+        /// </summary>
         private static void WriteLines(string path, string[] lines)
         {
-            throw new NotImplementedException();
+            File.WriteAllLines(path, lines);
         }
 
         /// <summary>
