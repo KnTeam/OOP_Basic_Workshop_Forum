@@ -8,7 +8,9 @@
     public class LogInController : IController, IReadUserInfoController
     {
         public string Username { get; private set; }
+
         private string Password { get; set; }
+
         private bool Error { get; set; }
 
         public LogInController()
@@ -27,6 +29,7 @@
                     this.ReadPassword();
                     return MenuState.Login;
                 case Command.LogIn:
+                    // TODO: try login
                     return MenuState.Error;
                 case Command.Back:
                     this.ResetLogin();
