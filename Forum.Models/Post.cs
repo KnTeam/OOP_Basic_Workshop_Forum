@@ -18,12 +18,12 @@
 
         public Post(int id, string title, string content, int categoryId, int authorId, IEnumerable<int> replyIds)
         {
-            Id = id;
-            Title = title;
-            Content = content;
-            CategoryId = categoryId;
-            AuthorId = authorId;
-            ReplyIds = new List<int>(replyIds);
+            this.Id = id;
+            this.Title = title;
+            this.Content = content;
+            this.CategoryId = categoryId;
+            this.AuthorId = authorId;
+            this.ReplyIds = new List<int>(replyIds);
         }
     }
 }

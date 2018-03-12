@@ -1,7 +1,5 @@
 ﻿namespace Forum.Models
 {
-    using System.Collections.Generic;
-
     public class Reply
     {
         public int Id { get; set; }
@@ -11,5 +9,13 @@
         public int AuthorId { get; set; }
 
         public int PostId { get; set; }
+
+        public Reply(int id, string content, int authorId, int postId)
+        {
+            this.Id = id;
+            this.Content = content;
+            this.AuthorId = authorId;
+            this.PostId = postId;
+        }
     }
 }

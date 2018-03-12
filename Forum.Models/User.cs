@@ -14,10 +14,10 @@
 
         public User(int id, string username, string password, ICollection<int> postIds)
         {
-            Id = id;
-            Username = username;
-            Password = password;
-            PostIds = new List<int>(postIds);
+            this.Id = id;
+            this.Username = username;
+            this.Password = password;
+            this.PostIds = new List<int>(postIds);
         }
     }
 }

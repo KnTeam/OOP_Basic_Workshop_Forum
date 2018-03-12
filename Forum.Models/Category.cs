@@ -8,13 +8,13 @@
 
         public string Name { get; set; }
 
-        public ICollection<int> Posts { get; set; }
+        public ICollection<int> PostIds { get; set; }
 
-        public Category(int id, string name, IEnumerable<int> posts)
+        public Category(int id, string name, IEnumerable<int> postIds)
         {
             this.Id = id;
             this.Name = name;
-            this.Posts = new List<int>(posts);
+            this.PostIds = new List<int>(postIds);
         }
     }
 }
