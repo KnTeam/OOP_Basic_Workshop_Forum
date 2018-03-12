@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Forum.Models;
+using System;
 
 namespace Forum.Data
 {
@@ -8,7 +9,7 @@ namespace Forum.Data
         {
             // var input = DataMapper.ReadLines(@"D:\Git\KnTeam\Workshop_Forum\Forum.Data\data");
             var forumData = new ForumData();
-            forumData.SaveChanges();
+
             foreach (var item in forumData.Categories)
             {
                 Console.WriteLine(item.Id);
@@ -35,6 +36,9 @@ namespace Forum.Data
                 Console.WriteLine(forumData.Categories.Find(x => x.Id.Equals(item.CategoryId)).Name);
                 Console.WriteLine(string.Join(",", item.ReplyIds));
             }
+
+            forumData.Categories.Add(new Category(10, "Test", new int[0]));
+            forumData.SaveChanges();
         }
     }
 }
