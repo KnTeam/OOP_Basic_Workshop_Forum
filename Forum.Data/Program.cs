@@ -6,6 +6,7 @@ namespace Forum.Data
     {
         static void Main(string[] args)
         {
+            // var input = DataMapper.ReadLines(@"D:\Git\KnTeam\Workshop_Forum\Forum.Data\data");
             var forumData = new ForumData();
             forumData.SaveChanges();
             foreach (var item in forumData.Categories)
