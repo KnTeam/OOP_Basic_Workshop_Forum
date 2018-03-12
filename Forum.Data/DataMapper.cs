@@ -21,27 +21,43 @@
 
         private static void EnsureConfigFile(string configFilePath)
         {
-            throw new NotImplementedException();
+            if (!File.Exists(configFilePath))
+            {
+                File.WriteAllText(configFilePath, DEFAULT_CONFIG);
+            }
         }
 
         private static void EnsureFile(string path)
         {
-            throw new NotImplementedException();
+            if (!File.Exists(path))
+            {
+                File.Create(path).Close();
+            }
         }
 
-        private static Dictionary<string, string> LoadConfig(string v)
+        private static Dictionary<string, string> LoadConfig(string configPath)
         {
-            throw new NotImplementedException();
+            EnsureConfigFile(configPath);
+
+            var contents = ReadLines(configPath);
+
+            var config = contents
+                .Select(x => x.Split('='))
+                .ToDictionary(x => x[0], x => DATA_PATH + x[1]);
+
+            return config;
         }
 
         private static string[] ReadLines(string path)
         {
-            throw new NotImplementedException();
+            EnsureFile(path);
+            var lines = File.ReadAllLines(path);
+            return lines;
         }
 
         private static void WriteLines(string path, string[] lines)
         {
-            throw new NotImplementedException();
+            File.WriteAllLines(path, lines);
         }
 
         /// <summary>
