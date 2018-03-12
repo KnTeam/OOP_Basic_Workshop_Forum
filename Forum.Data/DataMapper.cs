@@ -19,6 +19,9 @@
             config = LoadConfig(DATA_PATH + CONFIG_PATH);
         }
 
+        /// <summary>
+        /// Checks whether a file form the path exists and Create a new one with the string form DEFAULT_CONFIG constant if it doesn’t.
+        /// </summary>
         private static void EnsureConfigFile(string configFilePath)
         {
             if (!File.Exists(configFilePath))
@@ -27,6 +30,9 @@
             }
         }
 
+        /// <summary>
+        /// Checks whether a file form the path exists and Create a new empty one.
+        /// </summary>
         private static void EnsureFile(string path)
         {
             if (!File.Exists(path))
@@ -35,6 +41,10 @@
             }
         }
 
+        /// <summary>
+        /// After Calling the EnsureConfigFile method, here the data is read, split by delimiter '=', convert to Dictionary and return the config(load).
+        /// </summary>
+        /// <returns>Dictionary<string.string></string></returns>
         private static Dictionary<string, string> LoadConfig(string configPath)
         {
             EnsureConfigFile(configPath);
@@ -48,6 +58,10 @@
             return config;
         }
 
+        /// <summary>
+        /// Reads the lines of the file from the path specified and returns string array.
+        /// </summary>
+        /// <returns>String[]</returns>
         private static string[] ReadLines(string path)
         {
             EnsureFile(path);
@@ -55,6 +69,9 @@
             return lines;
         }
 
+        /// <summary>
+        /// Writes the string[] to file
+        /// </summary>
         private static void WriteLines(string path, string[] lines)
         {
             File.WriteAllLines(path, lines);
