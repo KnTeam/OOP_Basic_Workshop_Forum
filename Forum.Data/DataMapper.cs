@@ -8,7 +8,7 @@
 
     public class DataMapper
     {
-        private const string DATA_PATH = "../data/";
+        private const string DATA_PATH = "../Forum.Data/data/";
         private const string CONFIG_PATH = "config.ini";
         private const string DEFAULT_CONFIG = "users=users.csv\r\ncategories=categories.csv\r\nposts=posts.csv\r\nreplies=replies.csv";
         private static readonly Dictionary<string, string> config = new Dictionary<string, string>();
@@ -62,7 +62,7 @@
         /// Reads the lines of the file from the path specified and returns string array.
         /// </summary>
         /// <returns>String[]</returns>
-        private static string[] ReadLines(string path)
+        public static string[] ReadLines(string path)
         {
             EnsureFile(path);
             var lines = File.ReadAllLines(path);
@@ -72,7 +72,7 @@
         /// <summary>
         /// Writes the string[] to file
         /// </summary>
-        private static void WriteLines(string path, string[] lines)
+        public static void WriteLines(string path, string[] lines)
         {
             File.WriteAllLines(path, lines);
         }
