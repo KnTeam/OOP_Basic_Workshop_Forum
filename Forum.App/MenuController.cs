@@ -178,7 +178,14 @@
 
         private bool RedirectToMenu(MenuState newState)
         {
-            throw new NotImplementedException();
+            if (this.State != newState)
+            {
+                this.controllerHistory.Push((int)newState);
+                this.RenderCurrentView();
+                return true;
+            }
+
+            return false;
         }
 
         private void LogInUser()
