@@ -63,7 +63,8 @@
         {
             this.Error = false;
             this.Reply = new ReplyViewModel();
-            this.TextArea = new TextArea(centerLeft - 18, centerTop - 7, TEXT_AREA_WIDTH, TEXT_AREA_HEIGHT, POST_MAX_LENGTH);
+            var postTitleLines = this.Post?.Content.Count + 1 ?? 1;
+            this.TextArea = new TextArea(centerLeft - 18, centerTop + postTitleLines - 7, TEXT_AREA_WIDTH, TEXT_AREA_HEIGHT, POST_MAX_LENGTH);
         }
 
         public void GetPostViewModel(int postId)
