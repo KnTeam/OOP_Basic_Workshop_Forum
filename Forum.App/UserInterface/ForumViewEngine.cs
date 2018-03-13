@@ -162,7 +162,7 @@
             ClearRow(cursorLeft, cursorTop);
 
 			ShowCursor();
-			string result = Console.ReadLine();
+			string result = Console.ReadLine().Trim(new char[] {' ', '\t'});
 			HideCursor();
 			return result;
 		}
