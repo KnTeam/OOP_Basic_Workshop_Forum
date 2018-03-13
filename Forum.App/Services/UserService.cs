@@ -7,6 +7,24 @@
 
     public static class UserService
     {
+        internal static User GetUser(int userId)
+        {
+            ForumData forumData = new ForumData();
+
+            User user = forumData.Users.Find(x => x.Id == userId);
+
+            return user;
+        }
+
+        internal static User GetUser(string username)
+        {
+            ForumData forumData = new ForumData();
+
+            User user = forumData.Users.Find(x => x.Username == username);
+
+            return user;
+        }
+
         public static bool TryLogInUser(string username, string password)
         {
             if(string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password))

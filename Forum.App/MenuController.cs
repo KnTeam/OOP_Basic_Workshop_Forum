@@ -167,7 +167,13 @@
 
         private void OpenCategory()
         {
-            throw new NotImplementedException();
+            var categoriesController = (CategoriesController)this.CurrentController;
+
+            int categoryIndex = categoriesController.CurrentPage * CategoriesController.PAGE_OFFSET + this.currentOptionIndex;
+
+            var categoryCtrl = (CategoriesController)this.controllers[(int)MenuState.OpenCategory];
+
+            this.RedirectToMenu(MenuState.OpenCategory);
         }
 
         private void AddPost()
