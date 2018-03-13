@@ -23,10 +23,10 @@
             {
                 case Command.ReadUsername:
                     this.ReadUsername();
-                    return MenuState.Login;
+                    return MenuState.Signup;
                 case Command.ReadPassword:
                     this.ReadPassword();
-                    return MenuState.Login;
+                    return MenuState.Signup;
                 case Command.SignUp:
                     SignUpStatus signUp = UserService.TrySignUpUser(this.Username, this.Password);
                     switch (signUp)
