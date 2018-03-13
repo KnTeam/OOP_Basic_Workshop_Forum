@@ -5,6 +5,7 @@
     using System.Linq;
     using Forum.App.Controllers;
     using Forum.App.Controllers.Contracts;
+    using Forum.App.Services;
     using Forum.App.UserInterface;
     using Forum.App.UserInterface.Contracts;
 
@@ -136,7 +137,14 @@
 
         private void AddReply()
         {
-            throw new NotImplementedException();
+            //var addReplyController = (AddReplyController)this.CurrentController;
+            //int postId = addReplyController.Post.PostId;
+
+            //var postViewer = (PostDetailsController)this.controllers[(int)MenuState.ViewPost];
+            //postViewer.SetPostId(postId);
+            //addReplyController.ResetReply();
+            //this.controllerHistory.Pop();
+            //this.RedirectToMenu(MenuState.ViewPost);
         }
 
         private void RedirectToAddReply()
@@ -162,18 +170,17 @@
 
         private void ViewPost()
         {
-            //var categoryController = (CategoryController)this.CurrentController;
-            //int categoryId = categoryController.CategoryId;
-            //var posts = PostService.GetPostsByCategory(categoryId).ToArray();
+            var categoryController = (CategoryController)this.CurrentController;
+            int categoryId = categoryController.CategoryId;
+            var posts = PostService.GetPostsByCategory(categoryId).ToArray();
 
-            //int postIndex = categoryController.CurrentPage * CategoryController.PAGE_OFFSET + this.currentOptionIndex;
-            //var postId = posts[postIndex - 1].Id;
+            int postIndex = categoryController.CurrentPage * CategoryController.PAGE_OFFSET + this.currentOptionIndex;
+            var postId = posts[postIndex - 1].Id;
 
-            //var postController = (PostDetailsController)this.controllers[(int)MenuState.ViewPost];
-            //postController.SetPostId(postId);
+            var postController = (PostDetailsController)this.controllers[(int)MenuState.ViewPost];
+            postController.SetPostId(postId);
 
-            //this.RedirectToMenu(MenuState.ViewPost);
-
+            this.RedirectToMenu(MenuState.ViewPost);
         }
 
         private void OpenCategory()

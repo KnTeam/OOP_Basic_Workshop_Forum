@@ -55,5 +55,60 @@
 
             return replies;
         }
+
+        internal static bool TrySavePost(PostViewModel postView)
+        {
+            bool emptyCategory = string.IsNullOrWhiteSpace(postView.Category);
+            bool emptyTitle = string.IsNullOrWhiteSpace(postView.Title);
+            bool emptyContent = !postView.Content.Any();
+
+            if (emptyContent || emptyTitle || emptyCategory)
+            {
+                return false;
+            }
+
+            var forumData = new ForumData();
+            var category = EnsureCategory(postView, forumData);
+
+            var posts = forumData.Posts;
+            int postsId = posts.Any() ? posts.Last().Id + 1 : 1;
+            User author = UserService.GetUser(postView.Author);
+            int authorId = author.Id;
+            string content = string.Join("", postView.Content);
+            var post = new Post(postsId, postView.Title, content, category.Id, authorId, new List<int>());
+
+            forumData.Posts.Add(post);
+            author.PostIds.Add(post.Id);
+            category.PostIds.Add(post.Id);
+            forumData.SaveChanges();
+
+            postView.PostId = postsId;
+
+            return true;
+        }
+
+        public static PostViewModel GetPostViewModel(int postId)
+        {
+            ForumData forumData = new ForumData();
+            Post post = forumData.Posts.Find(x => x.Id == postId);
+            PostViewModel pvm = new PostViewModel(post);
+
+            return pvm;
+        }
+
+        private static Category EnsureCategory(PostViewModel postView, ForumData forumData)
+        {
+            var categoryName = postView.Category;
+            Category category = forumData.Categories.FirstOrDefault(x => x.Name == categoryName);
+            if (category == null)
+            {
+                var categories = forumData.Categories;
+                int categoryId = categories.Any() ? categories.Last().Id + 1 : 1;
+                category = new Category(categoryId, categoryName, new List<int>());
+                forumData.Categories.Add(category);
+            }
+
+            return category;
+        }
     }
 }

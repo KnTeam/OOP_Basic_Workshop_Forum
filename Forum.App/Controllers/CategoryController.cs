@@ -6,7 +6,6 @@
     using Forum.App.Controllers.Contracts;
     using Forum.App.UserInterface.Contracts;
     using Forum.App.Services;
-    using System.Linq;
     using Forum.App.Views;
 
     public class CategoryController : IController, IPaginationController

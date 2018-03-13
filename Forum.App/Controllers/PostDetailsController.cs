@@ -1,8 +1,10 @@
 ﻿namespace Forum.App.Controllers
 {
     using Forum.App.Controllers.Contracts;
+    using Forum.App.Services;
     using Forum.App.UserInterface;
     using Forum.App.UserInterface.Contracts;
+    using Forum.App.Views;
     using System;
 
     public class PostDetailsController : IController, IUserRestrictedController
@@ -28,9 +30,8 @@
 
         public IView GetView(string userName)
         {
-            //var pvm = PostService.GetPostViewModel(this.PostId);
-            //return new PostDetailsController(pvm, this.LoggedInUser);
-            throw new System.NotImplementedException();
+            var pvm = PostService.GetPostViewModel(this.PostId);
+            return new PostDetailsView(pvm, this.LoggedInUser);
         }
 
         public void UserLogIn()

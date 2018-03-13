@@ -1,6 +1,7 @@
 ﻿namespace Forum.App.Controllers
 {
     using Forum.App.Controllers.Contracts;
+    using Forum.App.Services;
     using Forum.App.UserInterface;
     using Forum.App.UserInterface.Contracts;
     using Forum.App.UserInterface.Input;
@@ -40,12 +41,12 @@
                     this.Post.Content = this.TextArea.Lines.ToList();
                     return MenuState.AddPost;
                 case Command.Post:
-                    //bool validPost = PostService.TrySavePost(this.Post);
-                    //if (!validPost)
-                    //{
-                    //    this.Error = true;
-                    //    return MenuState.Rerender;
-                    //}
+                    bool validPost = PostService.TrySavePost(this.Post);
+                    if (!validPost)
+                    {
+                        this.Error = true;
+                        return MenuState.Rerender;
+                    }
                     return MenuState.PostAdded;
             }
 
