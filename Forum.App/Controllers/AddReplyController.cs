@@ -74,7 +74,7 @@
 
         private enum Command
         {
-            Submit, Write, Back
+            Write, Submit, Back
         }
     }
 }
