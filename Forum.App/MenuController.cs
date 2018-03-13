@@ -137,19 +137,17 @@
 
         private void AddReply()
         {
-            //var addReplyController = (AddReplyController)this.CurrentController;
-            //int postId = addReplyController.Post.PostId;
-
-            //var postViewer = (PostDetailsController)this.controllers[(int)MenuState.ViewPost];
-            //postViewer.SetPostId(postId);
-            //addReplyController.ResetReply();
-            //this.controllerHistory.Pop();
-            //this.RedirectToMenu(MenuState.ViewPost);
+            this.controllerHistory.Pop();
+            this.RenderCurrentView();
         }
 
         private void RedirectToAddReply()
         {
-            throw new NotImplementedException();
+            var postDetailsController = (PostDetailsController)this.CurrentController;
+            var addReplyController = (AddReplyController)this.controllers[(int)MenuState.AddReply];
+
+            addReplyController.GetPostViewModel(postDetailsController.PostId);
+            this.RedirectToMenu(MenuState.AddReply);
         }
 
         private void LogOut()
@@ -189,7 +187,8 @@
 
             int categoryIndex = categoriesController.CurrentPage * CategoriesController.PAGE_OFFSET + this.currentOptionIndex;
 
-            var categoryCtrl = (CategoriesController)this.controllers[(int)MenuState.OpenCategory];
+            var categoryCtrl = (CategoryController)this.controllers[(int)MenuState.OpenCategory];
+            categoryCtrl.SetCategory(categoryIndex);
 
             this.RedirectToMenu(MenuState.OpenCategory);
         }

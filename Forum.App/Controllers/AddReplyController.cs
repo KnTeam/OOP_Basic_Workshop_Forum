@@ -1,6 +1,7 @@
 ﻿namespace Forum.App.Controllers
 {
     using Forum.App.Controllers.Contracts;
+    using Forum.App.Services;
     using Forum.App.UserInterface;
     using Forum.App.UserInterface.Contracts;
     using Forum.App.UserInterface.Input;
@@ -21,26 +22,31 @@
         public TextArea TextArea { get; set; }
         public bool Error { get; private set; }
 
+        public AddReplyController()
+        {
+            this.ResetReply();
+        }
+
         public MenuState ExecuteCommand(int index)
         {
             switch ((Command)index)
-            {
-                case Command.AddContent:
-                    this.ReadContent();
-                    return MenuState.AddReply;
+            {                
                 case Command.Write:
                     this.TextArea.Write();
                     this.Reply.Content = this.TextArea
                                                 .Lines.ToList();
                     return MenuState.AddReply;
-                case Command.Reply:
-                    //bool validPost = PostService.TryAddReply(this.Reply);
-                    //if (!validPost)
-                    //{
-                    //    this.Error = true;
-                    //    return MenuState.Rerender;
-                    //}
+                case Command.Submit:
+                    bool isReplyAdded = PostService.TryAddReply(this.Post.PostId, this.Reply);
+                    if (!isReplyAdded)
+                    {
+                        this.Error = true;
+                        return MenuState.Rerender;
+                    }
                     return MenuState.ReplyAdded;
+                case Command.Back:
+                    ForumViewEngine.ResetBuffer();
+                    return MenuState.Back;
             }
 
             throw new InvalidCommandException();
@@ -53,12 +59,6 @@
             return new AddReplyView(this.Post, this.Reply, this.TextArea, this.Error);
         }
 
-        public void ReadContent()
-        {
-            //this.Reply.Content = ForumViewEngine.ReadRow();
-            ForumViewEngine.HideCursor();
-        }
-
         public void ResetReply()
         {
             this.Error = false;
@@ -66,9 +66,15 @@
             this.TextArea = new TextArea(centerLeft - 18, centerTop - 7, TEXT_AREA_WIDTH, TEXT_AREA_HEIGHT, POST_MAX_LENGTH);
         }
 
+        public void GetPostViewModel(int postId)
+        {
+            this.Post = PostService.GetPostViewModel(postId);
+            this.ResetReply();
+        }
+
         private enum Command
         {
-            AddContent, Write, Reply
+            Submit, Write, Back
         }
     }
 }

@@ -87,6 +87,36 @@
             return true;
         }
 
+        internal static bool TryAddReply(int postId, ReplyViewModel replyView)
+        {
+            bool emptyAuthor = string.IsNullOrWhiteSpace(replyView.Author);
+            bool emptyContent = !replyView.Content.Any();
+
+            if (emptyContent || emptyAuthor)
+            {
+                return false;
+            }
+
+            var forumData = new ForumData();
+
+            var replies = forumData.Replies;
+            int replyId = replies.Any() ? replies.Last().Id + 1 : 1;
+
+            User author = UserService.GetUser(replyView.Author);
+            Post post = forumData.Posts.Find(p => p.Id == postId);
+            int authorId = author.Id;
+
+            string content = string.Join("", replyView.Content);
+            var reply = new Reply(replyId, content, authorId, postId);
+
+            forumData.Replies.Add(reply);
+            post.ReplyIds.Add(replyId);
+
+            forumData.SaveChanges();
+
+            return true;
+        }
+
         public static PostViewModel GetPostViewModel(int postId)
         {
             ForumData forumData = new ForumData();
