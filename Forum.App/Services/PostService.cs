@@ -60,7 +60,7 @@
         {
             bool emptyCategory = string.IsNullOrWhiteSpace(postView.Category);
             bool emptyTitle = string.IsNullOrWhiteSpace(postView.Title);
-            bool emptyContent = !postView.Content.Any();
+            bool emptyContent = !postView.Content.Any(x => x.Trim().Length > 0);
 
             if (emptyContent || emptyTitle || emptyCategory)
             {
@@ -90,7 +90,7 @@
         internal static bool TryAddReply(int postId, ReplyViewModel replyView)
         {
             bool emptyAuthor = string.IsNullOrWhiteSpace(replyView.Author);
-            bool emptyContent = !replyView.Content.Any();
+            bool emptyContent = !replyView.Content.Any(x => x.Trim().Length > 0);
 
             if (emptyContent || emptyAuthor)
             {
