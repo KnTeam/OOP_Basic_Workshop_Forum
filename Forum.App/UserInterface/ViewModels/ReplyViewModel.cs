@@ -9,7 +9,12 @@
     public class ReplyViewModel
     {
         private const int LINE_LENGHT = 37;
-        public ReplyViewModel() { }
+
+        public ReplyViewModel()
+        {
+            this.Content = new List<string>();
+        }
+
         public ReplyViewModel(Reply reply)
         {
             this.Author = UserService.GetUser(reply.AuthorId).Username;
