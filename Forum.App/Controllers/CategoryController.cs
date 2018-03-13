@@ -5,6 +5,8 @@
     using System.Linq;
     using Forum.App.Controllers.Contracts;
     using Forum.App.UserInterface.Contracts;
+    using Forum.App.Services;
+    using System.Linq;
     using Forum.App.Views;
 
     public class CategoryController : IController, IPaginationController
@@ -14,15 +16,15 @@
 
         public int CurrentPage { get; set; }
 
-        public int CategoryId { get; private set; }
+        private string[] PostTitles { get; set; }
 
-        private string[] PostTittles { get; set; }
-
-        private int LastPage => this.PostTittles.Length / 11;
+        private int LastPage => this.PostTitles.Length / 11;
 
         private bool IsFirstPage => this.CurrentPage == 0;
 
         private bool IsLastPage => this.CurrentPage == this.LastPage;
+
+        public int CategoryId { get; private set; }
 
         public CategoryController()
         {
@@ -32,23 +34,35 @@
 
         public MenuState ExecuteCommand(int index)
         {
-            switch ((Command)index)
+            if (index > 1 && index < 11)
             {
-                case Command.Back: return MenuState.Back;
-                case Command.ViewPost: return MenuState.ViewPost;
-                case Command.PreviousPage: return MenuState.OpenCategory;
-                case Command.NextPage: return MenuState.OpenCategory;
+                index = 1;
             }
 
-            throw new InvalidCastException();
+            switch ((Command)index)
+            {
+                case Command.Back:
+                    return MenuState.Back;
+                case Command.ViewPost:
+                    return MenuState.ViewPost;
+                case Command.PreviousPage:
+                    this.ChangePage(false);
+                    return MenuState.OpenCategory;
+                case Command.NextPage:
+                    this.ChangePage();
+                    return MenuState.OpenCategory;
+            }
+
+            throw new InvalidCommandException();
         }
 
         public IView GetView(string userName)
         {
             GetPosts();
-            string categoryName = string.Empty;
-            // string categoryName = PostService.GetCategory(this.CategoryId).Name;
-            return new CategoryView(categoryName, this.PostTittles, this.IsFirstPage, this.IsLastPage);
+
+            string categoryName = PostService.GetCategory(this.CategoryId).Name;
+
+            return new CategoryView(categoryName, this.PostTitles, this.IsFirstPage, this.IsLastPage);
         }
 
         public void SetCategory(int categoryId)
@@ -64,13 +78,13 @@
 
         private void GetPosts()
         {
-            //var allCategoryPosts= PostService.GetPostsByCategory(this.CategoryId);
+            var allCategoryPosts = PostService.GetPostsByCategory(this.CategoryId);
 
-            //this.PostTittles = allCategoryPosts
-            //    .Skip(this.CurrentPage * PAGE_OFFSET)
-            //    .Take(PAGE_OFFSET)
-            //    .Select(p => p.Title)
-            //    .ToArray();
+            this.PostTitles = allCategoryPosts
+                .Skip(this.CurrentPage * PAGE_OFFSET)
+                .Take(PAGE_OFFSET)
+                .Select(p => p.Title)
+                .ToArray();
         }
 
         private enum Command

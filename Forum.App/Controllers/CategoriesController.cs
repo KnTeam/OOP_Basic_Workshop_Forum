@@ -4,6 +4,8 @@
 
     using Forum.App.Controllers.Contracts;
     using Forum.App.UserInterface.Contracts;
+    using Forum.App.Services;
+    using System.Linq;
     using Forum.App.Views;
 
     public class CategoriesController : IController, IPaginationController
@@ -14,7 +16,6 @@
         public int CurrentPage { get; set; }
 
         private string[] AllCategoryNames { get; set; }
-
         private string[] CurrentPageCategories { get; set; }
 
         private int LastPage => this.AllCategoryNames.Length / (PAGE_OFFSET + 1);
@@ -29,9 +30,24 @@
             this.LoadCategories();
         }
 
+        private void LoadCategories()
+        {
+            this.AllCategoryNames = PostService.GetAllCategoryNames();
+
+            this.CurrentPageCategories = this.AllCategoryNames
+                .Skip(this.CurrentPage * PAGE_OFFSET)
+                .Take(PAGE_OFFSET)
+                .ToArray();
+        }
+
+        private void ChangePage(bool forward = true)
+        {
+            this.CurrentPage += forward ? 1 : -1;
+        }
+
         public MenuState ExecuteCommand(int index)
         {
-            if (1 < index && index < 11)
+            if(index > 1 && index < 11)
             {
                 index = 1;
             }
@@ -50,28 +66,13 @@
                     return MenuState.Rerender;
             }
 
-            throw new InvalidCastException();
+            throw new InvalidCommandException();
         }
 
         public IView GetView(string userName)
         {
             LoadCategories();
             return new CategoriesView(this.CurrentPageCategories, this.IsFirstPage, this.IsLastPage);
-        }
-
-        private void ChangePage(bool forward = true)
-        {
-            this.CurrentPage += forward ? 1 : -1;
-        }
-
-        private void LoadCategories()
-        {
-            //this.AllCategoryNames = PostService.GetAllCategoryNames();
-
-            //this.CurrentPageCategories = this.AllCategoryNames
-            //    .Skip(this.CurrentPage * PAGE_OFFSET)
-            //    .Take(PAGE_OFFSET)
-            //    .ToArray();
         }
 
         private enum Command

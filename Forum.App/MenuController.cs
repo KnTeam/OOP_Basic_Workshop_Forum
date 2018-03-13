@@ -146,12 +146,18 @@
 
         private void LogOut()
         {
-            throw new NotImplementedException();
+            this.Username = string.Empty;
+            this.LogOutUser();
+            this.RenderCurrentView();
         }
 
         private void SuccessfulLogin()
         {
-            throw new NotImplementedException();
+            var loginController = (IReadUserInfoController)this.CurrentController;
+            this.Username = loginController.Username;
+
+            this.LogInUser();
+            RedirectToMenu(MenuState.Main);
         }
 
         private void ViewPost()
@@ -168,14 +174,16 @@
 
             //this.RedirectToMenu(MenuState.ViewPost);
 
-            throw new NotImplementedException();
         }
 
         private void OpenCategory()
         {
             var categoriesController = (CategoriesController)this.CurrentController;
+
             int categoryIndex = categoriesController.CurrentPage * CategoriesController.PAGE_OFFSET + this.currentOptionIndex;
-            var categoryCtrlr = (CategoryController)this.controllers[(int)MenuState.OpenCategory];
+
+            var categoryCtrl = (CategoriesController)this.controllers[(int)MenuState.OpenCategory];
+
             this.RedirectToMenu(MenuState.OpenCategory);
         }
 
@@ -212,12 +220,24 @@
 
         private void LogInUser()
         {
-            throw new NotImplementedException();
+            foreach (var controller in this.controllers)
+            {
+                if(controller is IUserRestrictedController UserRestrictedController)
+                {
+                    UserRestrictedController.UserLogIn();
+                }
+            }
         }
 
         private void LogOutUser()
         {
-            throw new NotImplementedException();
+            foreach (var controller in this.controllers)
+            {
+                if (controller is IUserRestrictedController UserRestrictedController)
+                {
+                    UserRestrictedController.UserLogOut();
+                }
+            }
         }
     }
 }
