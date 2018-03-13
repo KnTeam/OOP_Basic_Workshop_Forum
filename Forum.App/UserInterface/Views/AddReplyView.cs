@@ -14,9 +14,15 @@
         private const int TOP_OFFSET = 7;
 
         public AddReplyView(PostViewModel postViewModel, ReplyViewModel reply, TextArea textArea, bool error = false)
-		{
+        {
             this.Post = postViewModel;
             this.SetBuffer();
+
+            if (error)
+            {
+                this.ErrorMessage = "Enter a valid reply!";
+            }
+
             this.InitalizeLabels();
         }
 
@@ -25,6 +31,8 @@
         public ILabel[] Buttons { get; private set; }
 
         private PostViewModel Post { get; }
+
+        private string ErrorMessage { get; set; } = "";
 
         private void SetBuffer()
         {
@@ -44,9 +52,12 @@
                 new Position(consoleCenter.Left - this.Post.Title.Length / 2, consoleCenter.Top - 10);
             Position authorPosition =
                 new Position(consoleCenter.Left - this.Post.Author.Length, consoleCenter.Top - 9);
+            Position errorPosition =
+                new Position(consoleCenter.Left - 18, consoleCenter.Top - 14);
 
             var labels = new List<ILabel>()
             {
+                new Label(this.ErrorMessage, errorPosition),
                 new Label(this.Post.Title, titlePosition),
                 new Label($"Author: {this.Post.Author}", authorPosition),
             };
