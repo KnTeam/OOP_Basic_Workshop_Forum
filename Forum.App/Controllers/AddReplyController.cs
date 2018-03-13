@@ -32,6 +32,7 @@
             switch ((Command)index)
             {                
                 case Command.Write:
+                    this.ResetReply();
                     this.TextArea.Write();
                     this.Reply.Content = this.TextArea
                                                 .Lines.ToList();
